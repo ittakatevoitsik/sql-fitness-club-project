@@ -1,12 +1,10 @@
---Запрос 1. Сколько абонементов каждого тарифного плана было оформлено?
+--Запрос 1. Сколько тренировок проводится каждой продолжительности?
 SELECT
-    membership_plans.plan_name,
-    COUNT(subscriptions.subscription_id) AS subscriptions_count
-FROM membership_plans
-JOIN subscriptions
-    ON membership_plans.membership_plan_id = subscriptions.membership_plan_id
-GROUP BY membership_plans.membership_plan_id, membership_plans.plan_name
-ORDER BY subscriptions_count DESC;
+    duration_minutes,
+    COUNT(workout_id) AS workouts_count
+FROM workouts
+GROUP BY duration_minutes
+ORDER BY workouts_count DESC;
 --Запрос 2. Какова общая сумма платежей по каждому способу оплаты?
 SELECT
     payment_method,
@@ -23,28 +21,22 @@ SELECT
 FROM membership_plans
 GROUP BY duration_days
 ORDER BY duration_days;
---Запрос 4. Какова средняя продолжительность тренировок каждого тренера,
--- если учитывать только тренировки длительностью от 45 минут?
+--Запрос №4. Сколько платежей каждого статуса совершено каждым способом оплаты?
 SELECT
-    trainers.first_name,
-    trainers.last_name,
-    COUNT(workouts.workout_id) AS workouts_count,
-    AVG(workouts.duration_minutes) AS average_duration
-FROM trainers
-JOIN workouts
-    ON trainers.trainer_id = workouts.trainer_id
-WHERE workouts.duration_minutes >= 45
-GROUP BY trainers.trainer_id, trainers.first_name, trainers.last_name
-ORDER BY average_duration DESC;
---Запрос 5.Сколько тренировок проводит каждый тренер в каждом спортивном зале?
+    payment_method,
+    payment_status,
+    COUNT(payment_id) AS payments_count
+FROM payments
+GROUP BY payment_method, payment_status
+HAVING COUNT(payment_id) >= 2
+ORDER BY payments_count DESC;
+--Запрос 5.Какова общая сумма платежей и их количество по каждому способу оплаты,
+-- если сумма отдельного платежа превышает 50?
 SELECT
-    trainers.first_name,
-    trainers.last_name,
-    workouts.gym_room,
-    COUNT(workouts.workout_id) AS workouts_count
-FROM trainers
-JOIN workouts
-    ON trainers.trainer_id = workouts.trainer_id
-GROUP BY trainers.trainer_id, trainers.first_name, trainers.last_name, workouts.gym_room
-HAVING COUNT(workouts.workout_id) >= 2
-ORDER BY workouts_count DESC;
+    payment_method,
+    COUNT(payment_id) AS payments_count,
+    SUM(amount) AS total_amount
+FROM payments
+WHERE amount > 50
+GROUP BY payment_method
+ORDER BY total_amount DESC;
