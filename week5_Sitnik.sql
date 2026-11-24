@@ -50,7 +50,7 @@ SELECT
     'Тренер' AS person_type
 FROM trainers
 ORDER BY last_name;
---Запрос 5. Какие тарифные планы ещё ни разу не выбирали клиенты?
+--Запрос 5. Какие тренеры ещё не проводили ни одной тренировки?
 SELECT
     trainers.trainer_id,
     trainers.first_name,
