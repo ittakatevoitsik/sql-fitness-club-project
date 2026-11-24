@@ -1,5 +1,5 @@
 
--- Запрос 1. Сколько клиентов родилось в каждом году?
+-- Запрос 6. Сколько клиентов родилось в каждом году?
 SELECT
     EXTRACT(YEAR FROM birth_date) AS birth_year,
     COUNT(client_id) AS clients_count
@@ -8,7 +8,7 @@ GROUP BY EXTRACT(YEAR FROM birth_date)
 ORDER BY birth_year;
 
 
--- Запрос 2. Какова общая сумма платежей по каждому статусу оплаты?
+-- Запрос 7. Какова общая сумма платежей по каждому статусу оплаты?
 SELECT
     payment_status,
     SUM(amount) AS total_amount
@@ -17,7 +17,7 @@ GROUP BY payment_status
 ORDER BY total_amount DESC;
 
 
--- Запрос 3. Какова средняя, минимальная и максимальная продолжительность тренировок у каждого тренера?
+-- Запрос 8. Какова средняя, минимальная и максимальная продолжительность тренировок у каждого тренера?
 SELECT
     trainer_id,
     AVG(duration_minutes) AS average_duration,
@@ -28,7 +28,7 @@ GROUP BY trainer_id
 ORDER BY trainer_id;
 
 
--- Запрос 4. Сколько записей на тренировки приходится на каждый статус бронирования?
+-- Запрос 9. Сколько записей на тренировки приходится на каждый статус бронирования?
 SELECT
     workout_id,
     booking_status,
@@ -39,7 +39,7 @@ HAVING COUNT(workout_booking_id) >= 2
 ORDER BY bookings_count DESC;
 
 
--- Запрос 5. Какова сумма платежей и количество платежей по каждому статусу,
+-- Запрос 10. Какова сумма платежей и количество платежей по каждому статусу,
 -- если сумма отдельного платежа превышает 100?
 SELECT
     payment_status,
